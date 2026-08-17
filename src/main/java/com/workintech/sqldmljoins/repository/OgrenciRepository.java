@@ -10,7 +10,7 @@ public interface OgrenciRepository extends JpaRepository<Ogrenci, Long> {
 
 
     //Kitap alan öğrencilerin öğrenci bilgilerini listeleyin..
-    String QUESTION_2 = "SELECT DISTINCT o.* FROM ogrenci o WHERE o.ogrno IN (SELECT ogrno FROM islem)";
+    String QUESTION_2 = "SELECT o.* FROM ogrenci o INNER JOIN islem i ON o.ogrno = i.ogrno";
     @Query(value = QUESTION_2, nativeQuery = true)
     List<Ogrenci> findStudentsWithBook();
 
@@ -42,11 +42,11 @@ public interface OgrenciRepository extends JpaRepository<Ogrenci, Long> {
     List<StudentNameCount> findStudentNameCount();
 
 
-    String QUESTION_8 = "SELECT sinif, COUNT(sinif) as count FROM ogrenci GROUP BY sinif";
+    String QUESTION_8 = "SELECT sinif, COUNT(sinif) as count FROM ogrenci GROUP BY sinif ORDER BY sinif DESC";
     @Query(value = QUESTION_8, nativeQuery = true)
     List<StudentClassCount> findStudentClassCount();
 
-    String QUESTION_9 = "SELECT o.ad, o.soyad, COUNT(i.kitapno) as count FROM ogrenci o LEFT JOIN islem i ON o.ogrno = i.ogrno GROUP BY o.ad, o.soyad";
+    String QUESTION_9 = "SELECT o.ad, o.soyad, COUNT(i.kitapno) as count FROM ogrenci o INNER JOIN islem i ON o.ogrno = i.ogrno GROUP BY o.ad, o.soyad";
     @Query(value = QUESTION_9, nativeQuery = true)
     List<StudentNameSurnameCount> findStudentNameSurnameCount();
 }
